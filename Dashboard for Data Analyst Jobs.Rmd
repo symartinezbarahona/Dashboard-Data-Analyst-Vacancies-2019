@@ -23,16 +23,17 @@ library (dplyr)
 ```
 
 ```{R, echo= FALSE, include= FALSE}
-job_hired_apply <- data %>% 
-     group_by(job_title) %>% # We want info about each level of this variable
+job_hired_apply <- data %>% # Summarizing data analyst titles by percent hired and percent easy apply
+     group_by(job_title) %>% 
      summarize(job_hired = (sum(hired == "TRUE", na.rm=TRUE)/7002*100), 
                             job_apply =(sum(easy_apply == "TRUE", na.rm=TRUE)/5340*100))
 
 job_hired_apply
 ```
+
 ```{R,echo= FALSE, include= FALSE}
 pander_job_hired_apply <- data %>% 
-     group_by(job_title) %>% # We want info about each level of this variable
+     group_by(job_title) %>% # In order to add the percentage sign to the subsequent table, a different subset needed                               to be created. Adding a percentage sign converts numerical values to string values                                  which makes working with the subset difficult. 
      summarize(job_hired = paste0(round(sum(hired == "TRUE", na.rm=TRUE)/7002*100, 2), "%"), 
   job_apply = paste0(round(sum(easy_apply == "TRUE", na.rm=TRUE)/5340*100,2), "%"))
 
@@ -57,28 +58,28 @@ caption = "Percent of Applicants Who Got Hired and Used Easy Apply By Data Analy
 
 ```{R,echo= FALSE, include= FALSE}
 n <-28
-palette <- distinctColorPalette(28)
+palette <- distinctColorPalette(28) #Colors are randomized for the sake of filling all values in the subsequent chart
 ```
 
 ```{R,echo= FALSE, include= FALSE}
 
-job_hired_apply <- job_hired_apply %>% 
+job_hired_apply <- job_hired_apply %>% #The positions of the labels needed to be calculated so that the labels do not                                         overlap when creating the pie chart
   mutate(csum = rev(cumsum(rev(job_hired))), 
          pos = job_hired/2 + lead(csum, 1),
          pos = if_else(is.na(pos), job_hired/2, pos))
 ```
 
 ```{R,echo= FALSE, include= FALSE}
-job_hired_apply <- job_hired_apply %>%
-  mutate(id=LETTERS[row_number()])
+job_hired_apply <- job_hired_apply %>% #A new column needed to be created in order to assign specific characters to                                        our values. There was too much overlap in the values
+  mutate(id=LETTERS[row_number()]) 
 ```
 
 ```{R,echo= FALSE, include= FALSE}
-job_hired_apply$id <- 1:28
+job_hired_apply$id <- 1:28 #Due to there only being 26 letters in the English Alphabet, numerical values needed ot be                             assigned to then assign additional characters
 ```
 
 ```{R,echo= FALSE, include= FALSE}
-job_hired_apply$id[c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28)] <- c("A", "B", "C","D","E", "F","G", "H","I", "J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X", "Y","Z","Za","Zb")
+job_hired_apply$id[c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28)] <- c("A", "B", "C","D","E", "F","G", "H","I", "J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X", "Y","Z","Za","Zb")       #Values assigned
 ```
 
 ```{R, fig.width=80, fig.height=78,echo= FALSE, warning = FALSE}
@@ -101,14 +102,14 @@ job_plot <- ggplot(job_hired_apply, aes(x="", y= job_hired, fill= paste0(id, ': 
   labs(x=NULL, y=NULL, fill= "Data Analyst Title") +
   labs (title="Percent Hired by Data Analyst Title")+
   labs (subtitle="Glassdoor 2019")+
-  labs (caption= "Github.com/symartinezbarahona")
+  labs (caption= "Github.com/symartinezbarahona") 
 
 job_plot
 ```
 
 ```{R,echo= FALSE, include= FALSE}
 
-job_hired_apply <- job_hired_apply %>% 
+job_hired_apply <- job_hired_apply %>% #Label positions for percent easy apply needed to be calculated
   mutate(csum1 = rev(cumsum(rev(job_apply))), 
          pos1 = job_apply/2 + lead(csum1, 1),
          pos1 = if_else(is.na(pos1), job_apply/2, pos1))
