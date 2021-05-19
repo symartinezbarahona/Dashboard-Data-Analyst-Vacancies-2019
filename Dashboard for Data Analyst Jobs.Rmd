@@ -106,3 +106,35 @@ job_plot <- ggplot(job_hired_apply, aes(x="", y= job_hired, fill= paste0(id, ': 
 job_plot
 ```
 
+```{R,echo= FALSE, include= FALSE}
+
+job_hired_apply <- job_hired_apply %>% 
+  mutate(csum1 = rev(cumsum(rev(job_apply))), 
+         pos1 = job_apply/2 + lead(csum1, 1),
+         pos1 = if_else(is.na(pos1), job_apply/2, pos1))
+```
+
+```{R, fig.width=80, fig.height=78,echo= FALSE, warning = FALSE}
+job_apply_plot <- ggplot(job_hired_apply, aes(x="", y= job_apply, fill= paste0(id, ': ' ,job_title, '- ',  round(job_apply,2),'%'))) +
+  geom_bar(width = 1, stat = "identity")+ 
+  geom_label_repel(aes(y=pos1,label= id),size = 18, nudge_x = 1, show.legend = FALSE) +
+  coord_polar("y", start=0)+
+  theme_classic()+
+  theme_void ()+
+  theme(legend.position = "top",
+       legend.title = element_text(size = 51),
+       legend.text = element_text(size = 47))+
+  theme(plot.title = element_text(size = 70, face = "bold"),
+        plot.subtitle = element_text(size = 68),
+        plot.caption = element_text(color = "blue", size = 68, face = "italic")) +
+  scale_fill_manual(values =palette)+
+  theme(axis.line = element_blank())+
+  theme(axis.text = element_blank())+
+  theme(axis.ticks = element_blank())+
+  labs(x=NULL, y=NULL, fill= "Data Analyst Title") +
+  labs (title="Percent Easy Apply by Data Analyst Title")+
+  labs (subtitle="Glassdoor 2019")+
+  labs (caption= "Github.com/symartinezbarahona")
+
+job_apply_plot
+```
