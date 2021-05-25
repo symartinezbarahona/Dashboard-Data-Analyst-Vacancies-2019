@@ -11,13 +11,12 @@ output:
 getwd()
 ```
 
-```{R, warning = FALSE, header = FALSE, message = FALSE, echo=FALSE }
+```{R, warning = FALSE, header = FALSE, message = FALSE, echo=FALSE}
 data <- read.csv("2019_data_analyst_job.csv")  
 library (lubridate)
-library(scales)
 library(ggplot2)
-library("ggrepel")
-library("randomcoloR")
+library(ggrepel)
+library(randomcoloR)
 library(tidyverse)
 library(pander)
 library(reshape2)
@@ -235,6 +234,7 @@ pander(date_applicants_summary,
 From both Table 2 and Table 3, you can see that the least number of applications received was 2,312 in February, the greatest was 3,138 in July, and the average for 2019 was 2,716 per month.
 
 ## Visualization of Changes in Applications Received Over 2019
+
 ```{R,echo= FALSE, warning = FALSE}
 trend_apps_plot <- ggplot(date_applicants, aes(x=months, y=applicants, group=1)) +
   geom_line(linetype = "solid", color= "blue")+
@@ -243,7 +243,7 @@ trend_apps_plot <- ggplot(date_applicants, aes(x=months, y=applicants, group=1))
   theme(plot.title = element_text(hjust=0.5, size=10),
         plot.subtitle = element_text(size=8, face = "italic",hjust=0.5),
         plot.caption = element_text(color = "red" ,hjust= 0)) +
-  labs(title="Figure 3: Total Data Analyst Applicants by Month" , x= "Month", y= "Applicants")+
+  labs(title="Figure 3: Total Data Analyst Applicants by Month", x= "Month", y= "Applicants")+
   labs(subtitle="Data from 2019")+
   labs(caption= "Source: Glassdoor Dataset")
 
@@ -255,7 +255,3 @@ According to Figure 3, it appears that, in general, applications received increa
 ## Conclusion 
 
 Overall, this report communicates important aspects of Glassdoor's recruitment experiences in 2019. The report uses job application data from 2019 to analyze and display key metrics, such as what percentage of applications were submitted for each job title, the total number of applications received per month, and the trend in the total number of applications received per month.This information will help discover patterns, trends, and insights that will lead to smart decisions in the future. The subsequent recommendations made from this data will help Glassdoor fill vacancies for data analytics jobs, enabling more businesses to hire talented data analytics professionals and become truly data-driven.
-
-
-
-
